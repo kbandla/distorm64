@@ -1,0 +1,5 @@
+Python bindings for distorm64
+
+Installation:
+python setup.py build
+python setup.py install
