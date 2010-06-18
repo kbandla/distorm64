@@ -1,5 +1,11 @@
 Python bindings for distorm64
 
+Tested on:
+OSX 10.5
+OSX 10.6 / x86_64
+Linux
+Windows 7
+
 Installation:
 python setup.py build
 python setup.py install

@@ -61,7 +61,8 @@ def main():
         machine = 'ppc'
     elif machine.endswith('86'):
         machine = 'x86'
-    elif not machine:
+    #for compiling on OSX >= 10.6
+    #elif not machine:
         if system == 'macosx':
             if arch == '64bit':
                 machine = 'x86_64'
@@ -84,8 +85,13 @@ def main():
     # Get the filename for the target platform
     if   system in ('windows', 'cygwin'):
         data = 'distorm64.dll'
-    elif system == 'darwin':
-        data = 'libdistorm64.dylib'
+    elif system == 'macosx':
+        if machine == 'x86_64':
+            data = 'libdistorm3.dylib'
+        elif machine == 'x86':
+            data = 'libdistorm64.dylib'
+        elif machine == 'ppc':
+            data = 'libdistorm64.dylib'
     else:
         data = 'libdistorm64.so'
 
@@ -95,7 +101,6 @@ def main():
         cwd = os.getcwd()
     root = '%s-%s' % (system, machine)
     root = os.path.join(cwd, root)
-
     # Check if the package root directory exists
     if not os.path.exists(root):
         print "Error: unsupported platform (%s-%s)" % (system, machine)
@@ -113,25 +118,27 @@ def main():
 
     # Metadata
     'name'              : 'distorm',
-    'version'           : '1.7.30',
+    'version'           : '1.7.33',
     'description'       : ':[diStorm64}:',
     'long_description'  : (
                         'The ultimate disassembler library (for AMD64, X86-64)\n'
                         'by Gil Dabah (arkon@ragestorm.net)\n'
                         '\n'
-                        'Python bindings by Mario Vilas (mvilas@gmail.com)'
+                        'Python bindings by Mario Vilas (mvilas@gmail.com)\n'
+                        'Updated by Kiran Bandla (kbandla@in2void.com)\n'
                         ),
     'author'            : 'Gil Dabah',
     'author_email'      : 'arkon'+chr(64)+'ragestorm'+chr(0x2e)+'net',
     'maintainer'        : 'Mario Vilas',
     'maintainer_email'  : 'mvilas'+chr(64)+'gmail'+chr(0x2e)+'com',
     'url'               : 'http://ragestorm.net/distorm/',
-    'download_url'      : 'http://ragestorm.net/distorm/',
+    'download_url'      : 'http://github.com/kbandla/distorm64',
     'platforms'         : ['cygwin', 'win', 'linux', 'macosx'],
     'classifiers'       : [
                         'License :: OSI Approved :: BSD License',
                         'Development Status :: 5 - Production/Stable',
                         'Intended Audience :: Developers',
+                        'License :: OSI Approved :: GNU General Public License (GPL)',
                         'Natural Language :: English',
                         'Operating System :: Microsoft :: Windows',
                         'Operating System :: MacOS :: MacOS X',
@@ -143,7 +150,6 @@ def main():
                         'Topic :: Software Development :: Libraries :: Python Modules',
                         ],
     }
-
     # Change the current directory
     curdir = os.path.split(__file__)[0]
     if curdir:
